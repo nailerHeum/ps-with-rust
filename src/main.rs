@@ -1,71 +1,43 @@
-// leetcode 1768 Merge Strings Alternately
+// leetcode 1431. Kids With the Greatest Number of Candies
 fn main() {
-    Solution::gcd_of_strings(String::from("abc"), String::from("pqr"));
+    Solution::kids_with_candies(vec![1, 2, 3], 1);
 }
 
 #[derive(Debug)]
 struct Solution {}
 
 impl Solution {
-    pub fn gcd_of_strings(str1: String, str2: String) -> String {
-        let (shorter_length, shorter_string, longer_length, longer_string) =
-            if str1.len() < str2.len() {
-                (str1.len(), str1, str2.len(), str2)
-            } else {
-                (str2.len(), str2, str1.len(), str1)
-            };
-
-        for i in 1..=shorter_length {
-            let short_rem = shorter_length.checked_rem(i).unwrap();
-            let short_div = shorter_length.checked_div(i).unwrap();
-            let long_rem = longer_length.checked_rem(short_div).unwrap();
-            if short_rem > 0 || long_rem > 0 {
-                continue;
-            }
-
-            let gcd_str = &shorter_string[0..short_div];
-            let multiply = longer_length.checked_div(short_div).unwrap();
-            if gcd_str.repeat(i) == shorter_string && gcd_str.repeat(multiply) == longer_string {
-                return String::from(gcd_str);
-            }
-        }
-
-        String::from("")
+    pub fn kids_with_candies(candies: Vec<i32>, extra_candies: i32) -> Vec<bool> {
+        let max = *candies.iter().max().unwrap();
+        return candies.iter().map(|x| x + extra_candies >= max).collect();
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::Solution;
+
     #[test]
     fn case_1() {
         assert_eq!(
-            Solution::gcd_of_strings(String::from("ABC"), String::from("ABCABC")),
-            String::from("ABC")
+            Solution::kids_with_candies(vec![2, 3, 5, 1, 3], 3),
+            vec![true, true, true, false, true]
         );
     }
 
     #[test]
     fn case_2() {
         assert_eq!(
-            Solution::gcd_of_strings(String::from("ABABAB"), String::from("ABAB")),
-            String::from("AB")
+            Solution::kids_with_candies(vec![4, 2, 1, 1, 2], 1),
+            vec![true, false, false, false, false]
         );
     }
 
     #[test]
     fn case_3() {
         assert_eq!(
-            Solution::gcd_of_strings(String::from("LEET"), String::from("CODE")),
-            String::from("")
-        );
-    }
-
-    #[test]
-    fn case_4() {
-        assert_eq!(
-            Solution::gcd_of_strings(String::from("AAAAAAAAA"), String::from("AAACCC")),
-            String::from("aa")
+            Solution::kids_with_candies(vec![12, 1, 12], 10),
+            vec![true, false, true]
         );
     }
 }
