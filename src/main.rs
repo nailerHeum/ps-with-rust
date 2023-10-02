@@ -1,28 +1,27 @@
-// leetcode 605. Can Place Flowers
+// leetcode 345. Reverse Vowels of a String
 fn main() {
-    Solution::can_place_flowers(vec![1, 0, 1], 1);
+    Solution::reverse_vowels("asdf".into());
 }
 
 #[derive(Debug)]
 struct Solution {}
 impl Solution {
-    pub fn can_place_flowers(flowerbed: Vec<i32>, n: i32) -> bool {
-        let mut capability = 0;
+    pub fn reverse_vowels(s: String) -> String {
+        let vowels: Vec<char> = vec!['A', 'a', 'E', 'e', 'I', 'i', 'O', 'o', 'U', 'u'];
+        let mut collected_vowels: Vec<char> = s
+            .chars()
+            .filter(|c| vowels.iter().any(|x| x == c))
+            .collect();
 
-        let mut zero_count = 1;
-        for flower in flowerbed {
-            if flower == 1 {
-                capability += (zero_count - 1) / 2;
-                zero_count = 0;
-            } else {
-                zero_count += 1;
-            }
-        }
-
-        if zero_count != 0 {
-            capability += zero_count / 2;
-        }
-        return capability >= n;
+        s.chars()
+            .map(|c| {
+                if vowels.iter().any(|v| *v == c) {
+                    collected_vowels.pop().unwrap()
+                } else {
+                    c
+                }
+            })
+            .collect()
     }
 }
 
@@ -32,11 +31,22 @@ mod tests {
 
     #[test]
     fn case_1() {
-        assert_eq!(Solution::can_place_flowers(vec![1, 0, 0, 0, 1], 1), true);
+        assert_eq!(
+            Solution::reverse_vowels("hello".into()),
+            String::from("holle")
+        );
     }
 
     #[test]
     fn case_2() {
-        assert_eq!(Solution::can_place_flowers(vec![1, 0, 0, 0, 1], 2), false);
+        assert_eq!(
+            Solution::reverse_vowels("leetcode".into()),
+            String::from("leotcede")
+        );
+    }
+
+    #[test]
+    fn case_3() {
+        assert_eq!(Solution::reverse_vowels("aA".into()), String::from("Aa"));
     }
 }
