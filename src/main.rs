@@ -1,26 +1,19 @@
-// leetcode 334. Increasing Triplet Subsequence
+// baekjoon 10926 ??!
+use std::io;
+
 fn main() {
-    Solution::increasing_triplet(vec![1, 2, 3, 4]);
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).unwrap();
+    let input: &str = input.trim();
+    let result = Solution::being_surprised(input);
+    print!("{result}");
 }
 
 #[derive(Debug)]
 struct Solution {}
 impl Solution {
-    pub fn increasing_triplet(nums: Vec<i32>) -> bool {
-        let mut min_midium = i32::MAX;
-        let mut min_small = i32::MAX;
-
-        nums.into_iter().any(|x| {
-            if min_small >= x {
-                min_small = x;
-                false
-            } else if min_small < x && x <= min_midium {
-                min_midium = x;
-                false
-            } else {
-                true
-            }
-        })
+    pub fn being_surprised(input: &str) -> String {
+        format!("{input}??!")
     }
 }
 
@@ -30,16 +23,14 @@ mod tests {
 
     #[test]
     fn case_1() {
-        assert_eq!(Solution::increasing_triplet(vec![1, 2, 3, 4, 5]), true);
+        assert_eq!(Solution::being_surprised("joonas"), "joonas??!".to_string());
     }
 
     #[test]
     fn case_2() {
-        assert_eq!(Solution::increasing_triplet(vec![5, 4, 3, 2, 1]), false);
-    }
-
-    #[test]
-    fn case_3() {
-        assert_eq!(Solution::increasing_triplet(vec![2, 1, 5, 0, 4, 6]), true);
+        assert_eq!(
+            Solution::being_surprised("baekjoon"),
+            "baekjoon??!".to_string()
+        );
     }
 }
