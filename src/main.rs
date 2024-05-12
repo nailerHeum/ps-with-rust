@@ -1,49 +1,25 @@
-// leetcode 443. String Compression
-use std::io;
+// leetcode 283. Move Zeroes
 
 fn main() {
-    let mut input = String::new();
-    io::stdin().read_line(&mut input).unwrap();
-    let mut input: Vec<char> = input.trim().chars().collect();
-    let result = Solution::compress(&mut input);
-    print!("{result}");
+    let mut nums = vec![0, 1, 0, 3, 12];
+    Solution::move_zeroes(&mut nums);
 }
 
 #[derive(Debug)]
 struct Solution {}
 impl Solution {
-    pub fn compress(chars: &mut Vec<char>) -> i32 {
-        let mut tmp_char = ' ';
-        let mut count = 0;
-        let mut is_single = true;
-        let mut result: String = String::new();
-        for c in chars.iter() {
-            if *c == tmp_char {
-                is_single = false;
-                count += 1;
-                continue;
+    pub fn move_zeroes(nums: &mut Vec<i32>) {
+        let mut idx = 0;
+        let mut scan_to = nums.len();
+        while idx < scan_to {
+            if nums[idx] == 0 {
+                nums.remove(idx);
+                nums.push(0);
+                scan_to -= 1;
+            } else {
+                idx += 1;
             }
-
-            if is_single == false {
-                result.push_str(&count.to_string());
-            }
-
-            result.push_str(&c.to_string());
-            count = 1;
-            tmp_char = *c;
-            is_single = true;
         }
-
-        if count > 1 {
-            result.push_str(&count.to_string());
-        }
-
-        for (idx, c) in result.chars().enumerate() {
-            chars[idx] = c;
-        }
-
-        chars.truncate(result.len());
-        return result.len() as i32;
     }
 }
 
@@ -53,24 +29,14 @@ mod tests {
 
     #[test]
     fn case_1() {
-        assert_eq!(
-            Solution::compress(&mut vec!['a', 'a', 'b', 'b', 'c', 'c', 'c']),
-            6,
-        );
+        let mut case1 = vec![0, 1, 0, 3, 12];
+        Solution::move_zeroes(&mut case1);
+        assert_eq!(case1, [1, 3, 12, 0, 0])
     }
 
     #[test]
-    fn case_2() {
-        assert_eq!(Solution::compress(&mut vec!['a']), 1);
-    }
+    fn case_2() {}
 
     #[test]
-    fn case_3() {
-        assert_eq!(
-            Solution::compress(&mut vec![
-                'a', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'
-            ]),
-            4
-        )
-    }
+    fn case_3() {}
 }
